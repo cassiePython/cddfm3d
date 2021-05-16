@@ -28,7 +28,7 @@ Face image manipulation via three-dimensional guidance has been widely applied i
 If you find our work useful for your research, please consider citing the following papers :)
 
 ```
-@article{wang2021crossdomain,
+@article{wang2021cross,
   title={Cross-Domain and Disentangled Face Manipulation with 3D Guidance},
   author={Wang, Can and Chai, Menglei and He, Mingming and Chen, Dongdong and Liao, Jing},
   journal={arXiv preprint arXiv:2104.11228},
