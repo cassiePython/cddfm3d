@@ -30,7 +30,7 @@ Face image manipulation via three-dimensional guidance has been widely applied i
 ### Data Preparation ###
 
 1. Download the StyleGAN2 checkpoint from [here](https://drive.google.com/file/d/1o1fUumJP3Ghzn16Su2RGC8u_QNTwMteX/view?usp=sharing) and place it into the 'stylegan2-pytorch/checkpoint' directory.
-2. For quickly try our method, I recommend to generate 4W latent&image training pairs:
+2. For quickly try our method, I recommend to generate 4W latent(StyleSpace)&image training pairs:
 
 ```
 python generate_data.py --pics 40000 --ckpt checkpoint/stylegan2-ffhq-config-f.pt
