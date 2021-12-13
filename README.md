@@ -40,7 +40,9 @@ Once finished, you will acquire 'Images', 'Latents', and 'latents.pkl' files.
 
 
 ## To Do
-- [ ] Release code
+- [ ] ~~Code for generating latent&image training pairs;~~
+- [ ] Next: Code and pre-trained models for the Attribute Prediction Network;
+- [ ] Remain to be done ...
 
 
 ## Citation
