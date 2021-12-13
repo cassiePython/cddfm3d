@@ -18,6 +18,26 @@
 Face image manipulation via three-dimensional guidance has been widely applied in various interactive scenarios due to its semantically-meaningful understanding and user-friendly controllability. However, existing 3D-morphable-model-based manipulation methods are not directly applicable to out-of-domain faces, such as non-photorealistic paintings, cartoon portraits, or even animals, mainly due to the formidable difficulties in building the model for each specific face domain. To overcome this challenge, we propose, as far as we know, the first method to manipulate faces in arbitrary domains using human 3DMM. This is achieved through two major steps: 1) disentangled mapping from 3DMM parameters to the latent space embedding of a pre-trained StyleGAN2 that guarantees disentangled and precise controls for each semantic attribute; and 2) cross-domain adaptation that bridges domain discrepancies and makes human 3DMM applicable to out-of-domain faces by enforcing a consistent latent space embedding. Experiments and comparisons demonstrate the superiority of our high-quality semantic manipulation method on a variety of face domains with all major 3D facial attributes controllable – pose, expression, shape, albedo, and illumination. Moreover, we develop an intuitive editing interface to support user-friendly control and instant feedback.
 
 
+## Getting Started
+
+### Requirements ###
+
+- Python 3.8
+- Torch 1.7.1 or Torch 1.8.0
+- Pytorch3D for rendering images
+
+
+### Data Preparation ###
+
+1. Download the StyleGAN2 checkpoint from [here](https://drive.google.com/file/d/1o1fUumJP3Ghzn16Su2RGC8u_QNTwMteX/view?usp=sharing) and place it into the 'stylegan2-pytorch/checkpoint' directory.
+2. For quickly try our method, I recommend to generate 4W latent&image training pairs:
+
+```
+python generate_data.py --pics 40000 --ckpt checkpoint/stylegan2-ffhq-config-f.pt
+```
+
+Once finished, you will acquire 'Images', 'Latents', and 'latents.pkl' files.
+
 
 ## To Do
 - [ ] Release code
