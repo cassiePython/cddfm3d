@@ -29,7 +29,7 @@ Face image manipulation via three-dimensional guidance has been widely applied i
 
 ### Data Preparation ###
 
-1. Download the StyleGAN2 checkpoint from [here](https://drive.google.com/file/d/1o1fUumJP3Ghzn16Su2RGC8u_QNTwMteX/view?usp=sharing) and place it into the 'stylegan2-pytorch/checkpoint' directory.
+1. Download the StyleGAN2 checkpoint from [here](https://drive.google.com/drive/folders/1LuvEw3ZZus-hFe73_G0uPmX3U8tOqPEm) and place it into the 'stylegan2-pytorch/checkpoint' directory.
 2. For quickly trying our method, I recommend to generate 4W latent(StyleSpace)&image training pairs:
 
 ```
@@ -39,9 +39,22 @@ python generate_data.py --pics 40000 --ckpt checkpoint/stylegan2-ffhq-config-f.p
 Once finished, you will acquire 'Images', 'Latents', and 'latents.pkl' files.
 
 
+### Estimate 3DMM Parameters and Facial Landmarks
+
+1. Download checkpoint from [here](https://drive.google.com/drive/folders/1_m1ZDwc2pjMUIzl5T4_bi7ZmrBBiiSqm) and place it into the 'Deep3DFaceReconstruction-pytorch/network' directory; 
+2. Download 3DMM bases from [here](https://drive.google.com/drive/folders/1_m1ZDwc2pjMUIzl5T4_bi7ZmrBBiiSqm) and place these files into the 'Deep3DFaceReconstruction-pytorch/BFM' directory;
+3. Estimate 3DMM parameters and dacial Landmarks:
+
+```
+cd Deep3DFaceReconstruction
+python extract_gt.py ../stylegan2-pytorch/Images
+```
+
+Once finished, you will acquire the 'params.pkl' file.
+
 ## To Do
 - [ ] ~~Code for generating latent&image training pairs;~~
-- [ ] Code for estimating 3DMM parameters and landmarks (Working now);
+- [ ] ~~Code for estimating 3DMM parameters and landmarks;~~
 - [ ] Code and pre-trained models for the Attribute Prediction Network (Next);
 - [ ] Remains ...
 
