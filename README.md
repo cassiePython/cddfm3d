@@ -41,9 +41,15 @@ Once finished, you will acquire 'Images', 'Latents', and 'latents.pkl' files.
 
 ## To Do
 - [ ] ~~Code for generating latent&image training pairs;~~
-- [ ] Next: Code and pre-trained models for the Attribute Prediction Network;
-- [ ] Remain to be done ...
+- [ ] Code for estimating 3DMM parameters and landmarks (Working now);
+- [ ] Code and pre-trained models for the Attribute Prediction Network (Next);
+- [ ] Remains ...
 
+
+## References
+
+- StyleGAN2-pytorch: https://github.com/rosinality/stylegan2-pytorch
+- Deep3DFaceReconstruction-pytorch: https://github.com/changhongjian/Deep3DFaceReconstruction-pytorch
 
 ## Citation
 
