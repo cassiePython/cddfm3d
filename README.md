@@ -43,7 +43,7 @@ Once finished, you will acquire 'Images', 'Latents', and 'latents.pkl' files.
 
 1. Download checkpoint from [here](https://drive.google.com/drive/folders/1_m1ZDwc2pjMUIzl5T4_bi7ZmrBBiiSqm) and place it into the 'Deep3DFaceReconstruction-pytorch/network' directory; 
 2. Download 3DMM bases from [here](https://drive.google.com/drive/folders/1_m1ZDwc2pjMUIzl5T4_bi7ZmrBBiiSqm) and place these files into the 'Deep3DFaceReconstruction-pytorch/BFM' directory;
-3. Estimate 3DMM parameters and dacial Landmarks:
+3. Estimate 3DMM parameters and facial Landmarks:
 
 ```
 cd Deep3DFaceReconstruction
