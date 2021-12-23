@@ -55,7 +55,7 @@ Once finished, you will acquire the 'params.pkl' file.
 ## To Do
 - [ ] ~~Code for generating latent&image training pairs;~~
 - [ ] ~~Code for estimating 3DMM parameters and landmarks;~~
-- [ ] Code and pre-trained models for the Attribute Prediction Network (Next);
+- [ ] Code and pre-trained models for the Attribute Prediction Network (After CVPR review);
 - [ ] Remains ...
 
 
