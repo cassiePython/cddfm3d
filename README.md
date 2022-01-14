@@ -20,26 +20,27 @@ Face image manipulation via three-dimensional guidance has been widely applied i
 
 ## Getting Started
 
-### Requirements ###
+### 0. Requirements ###
 
 - Python 3.8
 - Torch 1.7.1 or Torch 1.8.0
 - Pytorch3D for rendering images
 
 
-### Data Preparation ###
+### 1. Data Preparation ###
 
 1. Download the StyleGAN2 checkpoint from [here](https://drive.google.com/drive/folders/1LuvEw3ZZus-hFe73_G0uPmX3U8tOqPEm) and place it into the 'stylegan2-pytorch/checkpoint' directory.
-2. For quickly trying our method, I recommend to generate 4W latent(StyleSpace)&image training pairs:
+2. For quickly trying our method, I recommend to generate 4K latent(StyleSpace)&image training pairs:
 
 ```
-python generate_data.py --pics 40000 --ckpt checkpoint/stylegan2-ffhq-config-f.pt
+cd stylegan2-pytorch
+python generate_data.py --pics 4000 --ckpt checkpoint/stylegan2-ffhq-config-f.pt
 ```
 
-Once finished, you will acquire 'Images', 'Latents', and 'latents.pkl' files.
+Once finished, you will acquire 'Images' and 'latents.pkl' files.
 
 
-### Estimate 3DMM Parameters and Facial Landmarks
+### 2. Estimate 3DMM Parameters and Facial Landmarks
 
 1. Download checkpoint from [here](https://drive.google.com/drive/folders/1_m1ZDwc2pjMUIzl5T4_bi7ZmrBBiiSqm) and place it into the 'Deep3DFaceReconstruction-pytorch/network' directory; 
 2. Download 3DMM bases from [here](https://drive.google.com/drive/folders/1_m1ZDwc2pjMUIzl5T4_bi7ZmrBBiiSqm) and place these files into the 'Deep3DFaceReconstruction-pytorch/BFM' directory;
@@ -50,12 +51,51 @@ cd Deep3DFaceReconstruction
 python extract_gt.py ../stylegan2-pytorch/Images
 ```
 
-Once finished, you will acquire the 'params.pkl' file.
+Once finished, you will acquire the 'params.pkl' file. Then estimate the landmarks using dlib and split traning and testing datasets:
+
+```
+mv stylegan2-pytorch/Images sample_dataset/
+mv stylegan2-pytorch/latents.pkl sample_dataset/
+mv Deep3DFaceReconstruction-pytorch/params.pkl sample_dataset/
+cd sample_dataset/
+python extract_landmarks.py
+python split_train_test.py
+```
+
+### 3. Training Attribute Prediction Network
+
+Then train the Attribute Prediction Network:
+
+```
+python train.py --name apnet_wpdc --model APModel --train_wpdc
+```
+ 
+Test the Attribute Prediction Network:
+
+```
+python evaluate.py --name apnet_wpdc --model APModel
+```
+
+Some important parameters for training or testing: 
+
+|  Parameter  | Default | Discription  |
+|  ----  | ----  | ----  |
+| --name  | 'test' | name of the experiment |
+| --model  | 'APModel' | which model to be trained |
+| --train_wpdc | False | whether use WPDC loss |
+| --w_wpdc | 1.0 | weight of the WPDC loss
+| --data_dir | 'sample_dataset' | path to dataset |
+| --total_epoch | 200 | total epochs for training |
+| --save_interval | 20 | interval to save the model |
+| --batch_size | 128 | batch size to train the model |
+| --load_epoch | -1 (the final saved model) | which checkpoint to load for testing |
 
 ## To Do
 - [ ] ~~Code for generating latent&image training pairs;~~
 - [ ] ~~Code for estimating 3DMM parameters and landmarks;~~
-- [ ] Code and pre-trained models for the Attribute Prediction Network (After CVPR review);
+- [ ] Code and pre-trained models for the Attribute Prediction Network (Comming soon);
+- [ ] Code and pre-trained models for the Latent Manipulation Network
+- [ ] Code, Data and pre-trained models for Latent-Consistent Finetuning
 - [ ] Remains ...
 
 
