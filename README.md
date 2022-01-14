@@ -78,7 +78,7 @@ python evaluate.py --name apnet_wpdc --model APModel
 
 Some important parameters for training or testing: 
 
-|  Parameter  | Default | Discription  |
+|  Parameter  | Default | Description  |
 |  ----  | ----  | ----  |
 | --name  | 'test' | name of the experiment |
 | --model  | 'APModel' | which model to be trained |
