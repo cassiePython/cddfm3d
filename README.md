@@ -62,7 +62,7 @@ python extract_landmarks.py
 python split_train_test.py
 ```
 
-### 3. Training Attribute Prediction Network
+### 3. Training and Testing the Attribute Prediction Network
 
 Then train the Attribute Prediction Network:
 
@@ -89,6 +89,7 @@ Some important parameters for training or testing:
 | --save_interval | 20 | interval to save the model |
 | --batch_size | 128 | batch size to train the model |
 | --load_epoch | -1 (the final saved model) | which checkpoint to load for testing |
+
 
 ## To Do
 - [ ] ~~Code for generating latent&image training pairs;~~
