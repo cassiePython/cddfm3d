@@ -51,7 +51,7 @@ cd Deep3DFaceReconstruction
 python extract_gt.py ../stylegan2-pytorch/Images
 ```
 
-Once finished, you will acquire the 'params.pkl' file. Then estimate the landmarks using dlib and split traning and testing datasets.
+Once finished, you will acquire the 'params.pkl' file. Then estimate the landmarks using dlib and split training and testing datasets.
 Please download the dlib landmark predictor from [here](https://drive.google.com/file/d/1wDnffHOuoXB8B33R2y7ZQCU7IfVMxIVx/view?usp=sharing) and place it into the 'sample_dataset' directory.
 
 ```
@@ -105,7 +105,7 @@ Some important parameters for training or testing:
 ## To Do
 - [ ] ~~Code for generating latent&image training pairs;~~
 - [ ] ~~Code for estimating 3DMM parameters and landmarks;~~
-- [ ] ~~Code and pre-trained models for the Attribute Prediction Network~~
+- [ ] ~~Code and pre-trained models for the Attribute Prediction Network;~~
 - [ ] Code and pre-trained models for the Latent Manipulation Network
 - [ ] Code, Data and pre-trained models for Latent-Consistent Finetuning
 - [ ] Remains ...
