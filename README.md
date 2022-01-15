@@ -83,7 +83,7 @@ Test the Attribute Prediction Network and you will find results (the rendered im
 python evaluate.py --name apnet_wpdc --model APModel
 ```
 
-Some results of the APNet:
+Some testing results of APNet (pre-trained model with only 4K images, 3800 for training and 200 for testing):
 
 <img src='imgs/results_APnet.png'/>
 
