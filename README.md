@@ -77,7 +77,7 @@ Then train the Attribute Prediction Network:
 python train.py --name apnet_wpdc --model APModel --train_wpdc
 ```
  
-Test the Attribute Prediction Network and you will find results (the rendered image and the mesh) in the 'results' directoy:
+Test the Attribute Prediction Network and you will find results (the rendered image and the mesh) in the 'results' directory:
 
 ```
 python evaluate.py --name apnet_wpdc --model APModel
