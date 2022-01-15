@@ -26,6 +26,7 @@ Face image manipulation via three-dimensional guidance has been widely applied i
 - Torch 1.7.1 or Torch 1.8.0
 - Pytorch3D for rendering images
 
+Note: Related checkpoints and 3DMM bases can be downloaded from [here](https://drive.google.com/drive/folders/1qNvRu8vLPD278FW7GS-I9p6-yxYhKZY9?usp=sharing); you can also take the following steps to prepare these.
 
 ### 1. Data Preparation ###
 
@@ -38,7 +39,6 @@ python generate_data.py --pics 4000 --ckpt checkpoint/stylegan2-ffhq-config-f.pt
 ```
 
 Once finished, you will acquire 'Images' and 'latents.pkl' files.
-
 
 ### 2. Estimate 3DMM Parameters and Facial Landmarks
 
@@ -77,11 +77,15 @@ Then train the Attribute Prediction Network:
 python train.py --name apnet_wpdc --model APModel --train_wpdc
 ```
  
-Test the Attribute Prediction Network:
+Test the Attribute Prediction Network and you will find results (the rendered image and the mesh) in the 'results' directoy:
 
 ```
 python evaluate.py --name apnet_wpdc --model APModel
 ```
+
+Some results of the APNet:
+
+<img src='imgs/results_APnet.png'/>
 
 Some important parameters for training or testing: 
 
@@ -101,7 +105,7 @@ Some important parameters for training or testing:
 ## To Do
 - [ ] ~~Code for generating latent&image training pairs;~~
 - [ ] ~~Code for estimating 3DMM parameters and landmarks;~~
-- [ ] Code and pre-trained models for the Attribute Prediction Network (Comming soon);
+- [ ] ~~Code and pre-trained models for the Attribute Prediction Network~~
 - [ ] Code and pre-trained models for the Latent Manipulation Network
 - [ ] Code, Data and pre-trained models for Latent-Consistent Finetuning
 - [ ] Remains ...
