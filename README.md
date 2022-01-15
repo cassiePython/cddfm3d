@@ -51,7 +51,8 @@ cd Deep3DFaceReconstruction
 python extract_gt.py ../stylegan2-pytorch/Images
 ```
 
-Once finished, you will acquire the 'params.pkl' file. Then estimate the landmarks using dlib and split traning and testing datasets:
+Once finished, you will acquire the 'params.pkl' file. Then estimate the landmarks using dlib and split traning and testing datasets.
+Please download the dlib landmark predictor from [here](https://drive.google.com/file/d/1wDnffHOuoXB8B33R2y7ZQCU7IfVMxIVx/view?usp=sharing) and place it into the 'sample_dataset' directory.
 
 ```
 mv stylegan2-pytorch/Images sample_dataset/
@@ -63,6 +64,12 @@ python split_train_test.py
 ```
 
 ### 3. Training and Testing the Attribute Prediction Network
+
+Copy BFM from Deep3DFaceReconstruction:
+
+```
+cp -r Deep3DFaceReconstruction-pytorch/BFM/ ./bfm/
+```
 
 Then train the Attribute Prediction Network:
 
