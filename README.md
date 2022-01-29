@@ -2,8 +2,7 @@
 
 <img src='imgs/teaser.png'/>
 
-### [Project Page](https://cassiepython.github.io/cddfm3d/index) | [Paper (ArXiv)](https://arxiv.org/abs/2104.11228)
-
+### [Project Page](https://cassiepython.github.io/cddfm3d/index) | [Paper (ArXiv & TVCG)](https://arxiv.org/abs/2104.11228)
 
 [Can Wang](https://cassiepython.github.io/)<sup>1</sup>,
 [Menglei Chai](https://mlchai.com/)<sup>2</sup>,
