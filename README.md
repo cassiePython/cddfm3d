@@ -105,9 +105,9 @@ Some important parameters for training or testing:
 - [ ] ~~Code for generating latent&image training pairs;~~
 - [ ] ~~Code for estimating 3DMM parameters and landmarks;~~
 - [ ] ~~Code and pre-trained models for the Attribute Prediction Network;~~
-- [ ] Code and pre-trained models for the Latent Manipulation Network~(Will start after Spring Festival vacation);
-- [ ] Code, Data and pre-trained models for Latent-Consistent Finetuning
-- [ ] Remains ...
+- [ ] Code and pre-trained models for the Latent Manipulation Network~(Proceeding);
+- [ ] Code, Data and pre-trained models for Latent-Consistent Finetuning;
+- [ ] A Google Colab to train and test the method.
 
 
 ## References
