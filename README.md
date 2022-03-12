@@ -93,7 +93,7 @@ Some important parameters for training or testing:
 | --name  | 'test' | name of the experiment |
 | --model  | 'APModel' | which model to be trained |
 | --train_wpdc | False | whether use WPDC loss |
-| --w_wpdc | 1.0 | weight of the WPDC loss
+| --w_wpdc | 0.1 | weight of the WPDC loss
 | --data_dir | 'sample_dataset' | path to dataset |
 | --total_epoch | 200 | total epochs for training |
 | --save_interval | 20 | interval to save the model |
