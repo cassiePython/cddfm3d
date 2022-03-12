@@ -82,7 +82,7 @@ Test the Attribute Prediction Network and you will find results (the rendered im
 python evaluate.py --name apnet_wpdc --model APModel
 ```
 
-Some testing results of APNet (pre-trained model with only 4K images, 3800 for training and 200 for testing):
+Some testing results of APNet (Please use more synthesized data to improve performance and training robustness):
 
 <img src='imgs/results_APnet.png'/>
 
@@ -99,6 +99,11 @@ Some important parameters for training or testing:
 | --save_interval | 20 | interval to save the model |
 | --batch_size | 128 | batch size to train the model |
 | --load_epoch | -1 (the final saved model) | which checkpoint to load for testing |
+
+
+### 4. Training and Testing the Editing Network
+
+
 
 
 ## To Do
