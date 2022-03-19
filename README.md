@@ -83,7 +83,7 @@ Test the Attribute Prediction Network and you will find results (the rendered im
 python evaluate.py --name apnet_wpdc --model APModel
 ```
 
-Some testing results of APNet (Please use more synthesized data to improve performance and training robustness):
+Some test results of APNet (Please use more synthesized data to improve performance and training robustness):
 
 <img src='imgs/results_APnet.png'/>
 
@@ -116,7 +116,7 @@ Test the editing process and you will find results (the rendered images, meshes,
 python evaluate.py --name shape --model RIGModelS --load_apnet_epoch 80
 ```
 
-Some testing results of APNet (Please use more synthesized data to improve performance and training robustness):
+Some test results of Shape editing (Please use more synthesized data to improve performance and training robustness):
 
 <img src='imgs/shape_edits.jpg'/>
 
