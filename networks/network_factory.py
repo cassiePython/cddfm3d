@@ -10,6 +10,12 @@ class NetworksFactory:
         if network_name == 'APNet':
             from .networks import APNet
             network = APNet(*args, **kwargs)
+        elif network_name == 'RigNetEncoder':
+            from .networks import RigNetEncoder
+            network = RigNetEncoder(*args, **kwargs)
+        elif network_name == 'RigNetDecoder':
+            from .networks import RigNetDecoder
+            network = RigNetDecoder(*args, **kwargs)
         else:
             raise ValueError("Network %s not recognized." % network_name)
 

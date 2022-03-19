@@ -27,7 +27,10 @@ class APNet(NetworkBase):
                 nn.init.xavier_uniform_(m.weight)
             
     def forward(self, inp):
+        #print ("((((((((")
+        #print (inp)
         x = self.fcs(inp)
+        #print (")))))))")
         return x
 
 
@@ -60,33 +63,34 @@ class RigNetDecoder(NetworkBase):
         super(RigNetDecoder, self).__init__()
         self._name = "RigNetDecoder"
 
-        self._nets_shape = nn.ModuleList([nn.Linear(112, 256) for i in range(15)] +  # shape 80 + 32
+        self._nets_shape_albedo = nn.ModuleList([nn.Linear(112, 256) for i in range(15)] +  # shape | albedo 80 + 32
                                        [nn.Linear(112, 128) for i in range(3)] +
                                        [nn.Linear(112, 64) for i in range(3)] +
                                        [nn.Linear(112, 64) for i in range(3)] +
                                        [nn.Linear(112, 32) for i in range(2)])
-        self._nets_exp = nn.ModuleList([nn.Linear(96, 256) for i in range(15)] +
+        self._nets_exp = nn.ModuleList([nn.Linear(96, 256) for i in range(15)] + # expression 64 + 32
                                        [nn.Linear(96, 128) for i in range(3)] +
                                        [nn.Linear(96, 64) for i in range(3)] +
                                        [nn.Linear(96, 64) for i in range(3)] +
                                        [nn.Linear(96, 32) for i in range(2)])
-        self._nets_pose = nn.ModuleList([nn.Linear(35, 256) for i in range(15)] +
+        self._nets_pose = nn.ModuleList([nn.Linear(35, 256) for i in range(15)] + # pose 3 + 32
                                         [nn.Linear(35, 128) for i in range(3)] +
                                         [nn.Linear(35, 64) for i in range(3)] +
                                         [nn.Linear(35, 64) for i in range(3)] +
                                         [nn.Linear(35, 32) for i in range(2)])
-        self._nets_light = nn.ModuleList([nn.Linear(59, 256) for i in range(15)] +
+        self._nets_light = nn.ModuleList([nn.Linear(59, 256) for i in range(15)] + # light: 27 + 32
                                          [nn.Linear(59, 128) for i in range(3)] +
                                          [nn.Linear(59, 64) for i in range(3)] +
                                          [nn.Linear(59, 64) for i in range(3)] +
                                          [nn.Linear(59, 32) for i in range(2)])
+
         self._nets = nn.ModuleList([nn.Linear(256, 512) for i in range(15)] +
                                    [nn.Linear(128, 256) for i in range(3)] +
                                    [nn.Linear(64, 128) for i in range(3)] +
                                    [nn.Linear(64, 64) for i in range(3)] +
                                    [nn.Linear(32, 32) for i in range(2)])
 
-    def forwardS(self, inp, params, latent, paramsW):
+    def forwardShape(self, inp, params, latent, paramsW):
         """
         inp: batch, 26, 32
         params: batch, 80
@@ -98,7 +102,7 @@ class RigNetDecoder(NetworkBase):
         # for ind in range(6):
         for ind in range(4):
             inp_cat = torch.cat((inp[:, ind], paramsS), dim=1)
-            out = self._nets_shape[ind](inp_cat)  # batch, 512, 256, 128, 64, 32
+            out = self._nets_shape_albedo[ind](inp_cat)  # batch, 512, 256, 128, 64, 32
             out = self._nets[ind](out)  # batch, 512, 256, 128, 64, 32
             outs.append(out)
         outs = torch.cat(outs, dim=1)  # batch, 9088  --- 3072

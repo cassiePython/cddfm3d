@@ -25,11 +25,12 @@ def generate(args, g_ema, device, mean_latent):
                 sample_z = torch.randn(args.sample, args.latent, device=device)
                 sample_zs.append(sample_z)
 
-            sample, latent, _, styles = g_ema(sample_zs, truncation=args.truncation, truncation_latent=mean_latent, return_all=True)
+            sample, latent, constant, styles = g_ema(sample_zs, truncation=args.truncation, truncation_latent=mean_latent, return_all=True)
             #print ("styles size in StyleSpace: ", styles.shape)
 
             os.makedirs("Images", exist_ok=True)
             os.makedirs("Latents", exist_ok=True)
+            os.makedirs("Constants", exist_ok=True)
 
 
             utils.save_image(
@@ -41,9 +42,10 @@ def generate(args, g_ema, device, mean_latent):
             )
 
             np.save(f'Latents/{str(i).zfill(8)}.npy', styles.cpu().numpy())
+            np.save(f'Constants/{str(i).zfill(8)}.npy', constant.cpu().numpy())
             #np.save(f'noise/noise_{str(i).zfill(6)}.npy', np.array(noise)) #Use None
 
-def merge_latents(read_dir):
+def merge(read_dir, save_name, save_key):
     import dill
 
     latents = os.listdir(read_dir)
@@ -56,8 +58,8 @@ def merge_latents(read_dir):
         data = data.flatten()
         results[key] = data
 
-    with open("latents.pkl", 'wb') as fw:
-        res = {'latents': results}
+    with open(save_name, 'wb') as fw:
+        res = {save_key: results}
         dill.dump(res, fw)
 
 
@@ -98,8 +100,8 @@ if __name__ == '__main__':
 
     generate(args, g_ema, device, mean_latent)
 
-    read_dir = "Latents"
-    # merge all latent codes into a single file
-    print ("merge all latent codes into a single file ...")
-    merge_latents(read_dir)
+    # merge all latents/constants into a single file
+    print ("merge all latents/constants into a single file ...")
+    merge("Latents", "latents.pkl", 'latents')
+    merge("Constants", "constants.pkl", 'constants')
     print ("finish all!")

@@ -7,6 +7,7 @@ import random
 import numpy as np
 import dill
 from bfm.bfm import BFM
+from utils.preprocess_img import Preprocess
 
 
 class StyleGAN2Dataset(DatasetBase):
@@ -31,12 +32,26 @@ class StyleGAN2Dataset(DatasetBase):
         sample_id = self._ids[index]
         latent = self._get_latent_by_id(sample_id)
         param = self._get_param_by_id(sample_id)
+        constant = self._get_constant_by_id(sample_id)
+
+        if self._opt.train_render:
+            inp_img, img_path = self._get_img_by_id(sample_id)
+            lm = self._keypoints[sample_id]
+            inp_img, _, _ = Preprocess(inp_img, lm, self.lm3D)  # img_size 224
+            # inp_img = inp_img[0][..., ::-1] # RGB -> BGR
+            inp_img = inp_img[0].astype(np.float32)
+            inp_img = inp_img / 255.0
 
         sample = {
                   'latent': latent,
                   'sample_id': sample_id,
+                  'constant': constant, 
                   'param': param,
                 }
+
+        if self._opt.train_render:
+            sample['inp_img'] = inp_img
+            sample['keypoint'] = lm
 
         return sample
 
@@ -49,6 +64,7 @@ class StyleGAN2Dataset(DatasetBase):
         self._params = os.path.join(self._root, self._opt.params_path)
         self._landmark_path = os.path.join(self._root, self._opt.landmarks_path)
         self._latents_path = os.path.join(self._root, self._opt.latents_path)
+        self._constants_path = os.path.join(self._root, self._opt.constants_path)
 
         # read ids
         use_ids_filename = self._opt.train_list if self._is_for_train else self._opt.test_list
@@ -58,6 +74,7 @@ class StyleGAN2Dataset(DatasetBase):
         # read latents
         self._latents = self._read_latents(self._latents_path)
         self._landmarks = self._read_landmarks(self._landmark_path)
+        self._constants = self._read_constants(self._constants_path)
         # read params and rois
         self._params, self._keypoints = self._read_params_keypoints(self._params)
 
@@ -89,6 +106,12 @@ class StyleGAN2Dataset(DatasetBase):
             latents = res['latents']
         return latents
 
+    def _read_constants(self, file_path):
+        with open(file_path, 'rb') as fin:
+            res = dill.load(fin) 
+            constants = res['constants']
+        return constants
+
     def _read_params_keypoints(self, file_path):
         with open(file_path, 'rb') as fin:
             res = dill.load(fin)
@@ -98,7 +121,7 @@ class StyleGAN2Dataset(DatasetBase):
     def _read_landmarks(self, file_path):
         with open(file_path, 'rb') as fin:
             res = dill.load(fin)
-            outputs = res['outputs'] # 68 landmarks used for landmakrs loss
+            outputs = res['outputs'] # 68 landmarks
         return outputs
 
     def _get_landmark_by_id(self, id):
@@ -110,6 +133,12 @@ class StyleGAN2Dataset(DatasetBase):
     def _get_latent_by_id(self, id):
         if id in self._latents:
             return self._latents[id]
+        else:
+            return None
+
+    def _get_constant_by_id(self, id):
+        if id in self._constants:
+            return self._constants[id]
         else:
             return None
 

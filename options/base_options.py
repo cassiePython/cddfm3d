@@ -17,15 +17,14 @@ class BaseOptions():
         self._parser.add_argument('--params_path', type=str, default='params.pkl', help='params path')
         self._parser.add_argument('--landmarks_path', type=str, default='landmarks.pkl', help='landmarks path')
         self._parser.add_argument('--latents_path', type=str, default='latents.pkl', help='latents path')
+        self._parser.add_argument('--constants_path', type=str, default='constants.pkl', help='constants path')
         self._parser.add_argument('--name', type=str, default='test',
                                   help='name of the experiment. It decides where to store samples and models')
-        self._parser.add_argument('--finetune_name', type=str, default='test', help='finetune name of the experiment')
-        self._parser.add_argument('--dfrnet_name', type=str, default='test', help='finetune name of the experiment')
+
+        self._parser.add_argument('--apnet_name', type=str, default='apnet_wpdc', help='APModel name of the experiment')
         self._parser.add_argument('--load_epoch', type=int, default=-1, help='which epoch to load? set to -1 to use latest cached model')
-        self._parser.add_argument('--load_generator_epoch', type=int, default=-1, help='which epoch to load? set to -1 to use latest cached model')
-        self._parser.add_argument('--load_finetune_epoch', type=int, default=-1, help='which finetune epoch to load? set to -1 to use latest cached model')
-        self._parser.add_argument('--load_apnet_epoch', type=int, default=-1, help='which APNet epoch to load? set to -1 to use latest cached model')
-        self._parser.add_argument('--model', type=str, default='APModel', help='model to run')
+        self._parser.add_argument('--load_apnet_epoch', type=int, default=200, help='which APNet epoch to load?')
+        self._parser.add_argument('--model', type=str, default='APModel', help='model to run: APModel | RIGModelS')
 
         self._parser.add_argument('--train_list', type=str, default='train_list.txt', help='training data')            
         self._parser.add_argument('--test_list', type=str, default='test_list.txt', help='testing data')
@@ -34,6 +33,8 @@ class BaseOptions():
 
         self._parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
         self._parser.add_argument('--finetune', action='store_true', help='if true, finetune the model')
+        
+        self._parser.add_argument('--train_render', action='store_true', help='if True, using render loss to train the model')
         self._initialized = True
 
     def parse(self):

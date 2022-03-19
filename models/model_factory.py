@@ -12,6 +12,9 @@ class ModelsFactory:
         if model_name == 'APModel':
             from .models import APModel
             model = APModel(*args, **kwargs)
+        elif model_name == 'RIGModelS':
+            from .modelsS import RIGModel
+            model = RIGModel(*args, **kwargs)
         else:
             raise ValueError("Model %s not recognized." % model_name)
 
@@ -94,12 +97,16 @@ class BaseModel(object):
         assert os.path.exists(
             load_path), 'Weights file not found. Have you trained a model!? We are not providing one' % load_path
 
-        state_dict = torch.load(load_path)
-        if len(self._gpu_ids) > 1:
-            network.module.load_state_dict(torch.load(load_path))
-        else:
-            network.load_state_dict(torch.load(load_path))
-        print ('loaded net: %s' % load_path)
+        try:
+            state_dict = torch.load(load_path)
+            if len(self._gpu_ids) > 1:
+                network.module.load_state_dict(torch.load(load_path))
+            else:
+                network.load_state_dict(torch.load(load_path))
+            print ('loaded net: %s' % load_path)
+        except:
+            torch.load(load_path, map_location="cuda:0")
+            print ('loaded net: %s' % load_path)
 
     def print_network(self, network):
         num_params = 0

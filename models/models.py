@@ -65,8 +65,8 @@ class APModel(BaseModel):
         ], lr=self._current_lr, betas=(0.9, 0.99))
         self._scheduler = WarmupMultiStepLR(
             self._optimizer,
-            [100, 200],
-            #[20, 40, 60, 80],
+            #[100, 200],
+            [20, 40, 60, 80],
             gamma = 0.01,
             warmup_epochs = 5,
         )

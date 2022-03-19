@@ -8,7 +8,10 @@ from torch import nn
 from torch.nn import functional as F
 from torch.autograd import Function
 
-from op import FusedLeakyReLU, fused_leaky_relu, upfirdn2d
+try:
+    from op import FusedLeakyReLU, fused_leaky_relu, upfirdn2d
+except:
+    from .op import FusedLeakyReLU, fused_leaky_relu, upfirdn2d
 
 # added by Can 
 def random_num_with_fix_total(maxValue, num):
@@ -597,6 +600,42 @@ class Generator(nn.Module):
             return image, latent, constant, styles 
         else:
             return image, None
+
+    def forward_test(
+        self,
+        styles, # styles: list total is torch.Size([9088]), should split before
+        constant, 
+        randomize_noise=True,
+        noise=None,
+    ):
+
+        if noise is None:
+            if randomize_noise:
+                noise = [None] * self.num_layers
+            else:
+                noise = [
+                    getattr(self.noises, f'noise_{i}') for i in range(self.num_layers)
+                ]
+
+        input = constant # input: torch.Size([1, 512, 4, 4])
+        out = self.conv1(input, styles[0], noise=noise[0], if_use=True)
+        skip = self.to_rgb1(out, styles[1], if_use=True)
+
+        ind = 2
+        for conv1, conv2, noise1, noise2, to_rgb in zip(
+            self.convs[::2], self.convs[1::2], noise[1::2], noise[2::2], self.to_rgbs
+        ):
+            out = conv1(out, styles[ind], noise=noise1, if_use=True)
+
+            out = conv2(out, styles[ind+1], noise=noise2, if_use=True)
+
+            skip = to_rgb(out, styles[ind + 2], skip, if_use=True)
+
+            ind += 3
+        image = skip
+        return image
+
+
 
 
 class ConvLayer(nn.Sequential):
