@@ -37,7 +37,7 @@ cd stylegan2-pytorch
 python generate_data.py --pics 4000 --ckpt checkpoint/stylegan2-ffhq-config-f.pt
 ```
 
-Once finished, you will acquire 'Images' and 'latents.pkl' files.
+Once finished, you will acquire 'Images', 'latents.pkl', and 'constants.pkl' files.
 
 ### 2. Estimate 3DMM Parameters and Facial Landmarks
 
@@ -47,15 +47,16 @@ Once finished, you will acquire 'Images' and 'latents.pkl' files.
 
 ```
 cd Deep3DFaceReconstruction
-python extract_gt.py ../stylegan2-pytorch/Images
+python extract_gt.py ../stylegan2/Images
 ```
 
 Once finished, you will acquire the 'params.pkl' file. Then estimate the landmarks using dlib and split training and testing datasets.
 Please download the dlib landmark predictor from [here](https://drive.google.com/file/d/1wDnffHOuoXB8B33R2y7ZQCU7IfVMxIVx/view?usp=sharing) and place it into the 'sample_dataset' directory.
 
 ```
-mv stylegan2-pytorch/Images sample_dataset/
-mv stylegan2-pytorch/latents.pkl sample_dataset/
+mv stylegan2/Images sample_dataset/
+mv stylegan2/latents.pkl sample_dataset/
+mv stylegan2/constants.pkl sample_dataset/
 mv Deep3DFaceReconstruction-pytorch/params.pkl sample_dataset/
 cd sample_dataset/
 python extract_landmarks.py
@@ -103,14 +104,38 @@ Some important parameters for training or testing:
 
 ### 4. Training and Testing the Editing Network
 
+Train the Encoder and Decoder for the attribute editing in real face domain:
 
+```
+python train.py --name shape --model RIGModelS --train_render --train_landmark --train_rec --train_edge --load_apnet_epoch 80
+```
+
+Test the editing process and you will find results (the rendered images, meshes, and editing results) in the 'results' directory:
+
+```
+python evaluate.py --name shape --model RIGModelS --load_apnet_epoch 80
+```
+
+Some testing results of APNet (Please use more synthesized data to improve performance and training robustness):
+
+<img src='imgs/shape_edits.jpg'/>
+
+Some important parameters for training or testing:
+
+|  Parameter  | Default | Description  |
+|  ----  | ----  | ----  |
+| --train_render | False | whether use render loss |
+| --train_landmark | False | whether use landmark loss |
+| --train_rec | False | whether use recycle loss |
+| --train_edge | False | whether use edge loss (only for shape editing) |
+| --load_apnet_epoch | -1 | which APNet to load for training or testing |
 
 
 ## To Do
 - [ ] ~~Code for generating latent&image training pairs;~~
 - [ ] ~~Code for estimating 3DMM parameters and landmarks;~~
 - [ ] ~~Code and pre-trained models for the Attribute Prediction Network;~~
-- [ ] Code and pre-trained models for the Latent Manipulation Network~(Proceeding);
+- [ ] Code and pre-trained models for the Latent Manipulation Network;
 - [ ] Code, Data and pre-trained models for Latent-Consistent Finetuning;
 - [ ] A Google Colab to train and test the method.
 
