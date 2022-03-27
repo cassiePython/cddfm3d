@@ -41,7 +41,7 @@ Once finished, you will acquire 'Images', 'latents.pkl', and 'constants.pkl' fil
 
 ### 2. Estimate 3DMM Parameters and Facial Landmarks
 
-1. Download checkpoint from [here](https://drive.google.com/drive/folders/1_m1ZDwc2pjMUIzl5T4_bi7ZmrBBiiSqm) and place it into the 'Deep3DFaceReconstruction-pytorch/network' directory; 
+1. Download checkpoint from [here](https://drive.google.com/drive/folders/1_m1ZDwc2pjMUIzl5T4_bi7ZmrBBiiSqm) and place it into the 'Deep3DFaceReconstruction-pytorch/network' directory;
 2. Download 3DMM bases from [here](https://drive.google.com/drive/folders/1_m1ZDwc2pjMUIzl5T4_bi7ZmrBBiiSqm) and place these files into the 'Deep3DFaceReconstruction-pytorch/BFM' directory;
 3. Estimate 3DMM parameters and facial Landmarks:
 
@@ -76,7 +76,7 @@ Then train the Attribute Prediction Network:
 ```
 python train.py --name apnet_wpdc --model APModel --train_wpdc
 ```
- 
+
 Test the Attribute Prediction Network and you will find results (the rendered image and the mesh) in the 'results' directory:
 
 ```
@@ -87,7 +87,7 @@ Some test results of APNet (Please use more synthesized data to improve performa
 
 <img src='imgs/results_APnet.png'/>
 
-Some important parameters for training or testing: 
+Some important parameters for training or testing:
 
 |  Parameter  | Default | Description  |
 |  ----  | ----  | ----  |
@@ -104,7 +104,7 @@ Some important parameters for training or testing:
 
 ### 4. Training and Testing the Editing Network
 
-Train the Encoder and Decoder for the attribute editing in real face domain:
+Train the Encoder and Decoder for the attribute editing in real face domain (e.g. shape editing):
 
 ```
 python train.py --name shape --model RIGModelS --train_render --train_landmark --train_rec --train_edge --load_apnet_epoch 80
@@ -129,13 +129,14 @@ Some important parameters for training or testing:
 | --train_rec | False | whether use recycle loss |
 | --train_edge | False | whether use edge loss (only for shape editing) |
 | --load_apnet_epoch | -1 | which APNet to load for training or testing |
+| --model | 'RIGModelS' | RIGModelS, RIGModelE, RIGModelL, RIGModelP, RIGModelA for shape, expression, light, pose, and albedo editing |
 
 
 ## To Do
 - [ ] ~~Code for generating latent&image training pairs;~~
 - [ ] ~~Code for estimating 3DMM parameters and landmarks;~~
 - [ ] ~~Code and pre-trained models for the Attribute Prediction Network;~~
-- [ ] Code and pre-trained models for the Latent Manipulation Network;
+- [ ] ~~Code and pre-trained models for the Latent Manipulation Network;~~
 - [ ] Code, Data and pre-trained models for Latent-Consistent Finetuning;
 - [ ] A Google Colab to train and test the method.
 

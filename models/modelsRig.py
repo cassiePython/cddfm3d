@@ -12,7 +12,8 @@ from bfm.bfm import BFM
 class RIGModel(BaseModel):
     def __init__(self, opt, is_train):
         super(RIGModel, self).__init__(opt, is_train)
-        self._name = 'RIGModelS'
+        self._model_name = self._opt.model
+        self._name = 'RIGModel_%s' % self._model_name 
 
         # create networks
         self._init_create_networks()
@@ -126,18 +127,20 @@ class RIGModel(BaseModel):
         
         N = latent.shape[0]
 
-        #print ("---latent----")
-        #print (latent)
-
         # Reconstruction 
-        #I = self.RigNetEncoder(latent) 
         Pv = self.APNet(latent)
-        #print ("XXX_PV__XXXXX")
-        #print (Pv)
         I = self.RigNetEncoder(latent) 
 
-
-        What = self.RigNetDecoder.forwardShape(I, Pv, latent, Pv)
+        if self._model_name == 'RIGModelS':     
+            What = self.RigNetDecoder.forwardShape(I, Pv, latent, Pv)
+        elif self._model_name == 'RIGModelE':     
+            What = self.RigNetDecoder.forwardExpression(I, Pv, latent, Pv)
+        elif self._model_name == 'RIGModelP':     
+            What = self.RigNetDecoder.forwardPose(I, Pv, latent, Pv)
+        elif self._model_name == 'RIGModelL':     
+            What = self.RigNetDecoder.forwardLight(I, Pv, latent, Pv)
+        elif self._model_name == 'RIGModelA':     
+            What = self.RigNetDecoder.forwardAlbedo(I, Pv, latent, Pv)
         What_flat = What.view(N, -1)
 
         loss = 0
@@ -150,41 +153,53 @@ class RIGModel(BaseModel):
         w_ce = latent[: SP] # (Batch-size/2, ...)
         v_ce = latent[SP:] # (Btach-size/2, ...)
 
-        #print ("=======")
-        #print (v_ce)
-        #print (w_ce)
-
-        
-
         Pv_ce = self.APNet(v_ce.view(SP, -1))
-        #print ("XXX_PVCE_XXXXX")
-        #print (Pv_ce)
 
         I_ce = self.RigNetEncoder(w_ce) 
         Pw_cc = self.APNet(w_ce.view(SP, -1))
-        #print ("XXXX_PWCC_XXXX")
-        #print (Pw_cc)
-        What_ce = self.RigNetDecoder.forwardShape(I_ce, Pv_ce, w_ce, Pw_cc)
-        Phat_ce = self.APNet(What_ce.view(SP, -1))
-        #print ("XXXX_Phatce_XXXX")
-        #print (Phat_ce)
-        Pedit = Pv_ce.clone()
-        Pedit[:, :80] = Phat_ce[:, :80]  
-        Iv = images[SP:] 
 
-        # Cycle-Consistent Per-pixel Consistency Loss
+        Pedit = Pv_ce.clone()
         Pconsist = Pw_cc.clone()
-        Pconsist[:, 80:] = Phat_ce[:, 80:]
+        if self._model_name == 'RIGModelS':     
+            What_ce = self.RigNetDecoder.forwardShape(I_ce, Pv_ce, w_ce, Pw_cc)
+            Phat_ce = self.APNet(What_ce.view(SP, -1))
+            Pedit[:, :80] = Phat_ce[:, :80]  
+            # Cycle-Consistent Per-pixel Consistency Loss
+            Pconsist[:, 80:] = Phat_ce[:, 80:]
+        elif self._model_name == 'RIGModelE':     
+            What_ce = self.RigNetDecoder.forwardExpression(I_ce, Pv_ce, w_ce, Pw_cc)
+            Phat_ce = self.APNet(What_ce.view(SP, -1))
+            Pedit[:, 80:144] = Phat_ce[:, 80:144]  
+            # Cycle-Consistent Per-pixel Consistency Loss
+            Pconsist[:, :80] = Phat_ce[:, :80]
+            Pconsist[:, 144:] = Phat_ce[:, 144:]
+        elif self._model_name == 'RIGModelA':     
+            What_ce = self.RigNetDecoder.forwardAlbedo(I_ce, Pv_ce, w_ce, Pw_cc)
+            Phat_ce = self.APNet(What_ce.view(SP, -1))
+            Pedit[:, 144:224] = Phat_ce[:, 144:224]  
+            # Cycle-Consistent Per-pixel Consistency Loss
+            Pconsist[:, :144] = Phat_ce[:, :144]
+            Pconsist[:, 224:] = Phat_ce[:, 224:]
+        elif self._model_name == 'RIGModelP':     
+            What_ce = self.RigNetDecoder.forwardPose(I_ce, Pv_ce, w_ce, Pw_cc)
+            Phat_ce = self.APNet(What_ce.view(SP, -1))
+            Pedit[:, 224:227] = Phat_ce[:, 224:227]  
+            # Cycle-Consistent Per-pixel Consistency Loss
+            Pconsist[:, :224] = Phat_ce[:, :224]
+            Pconsist[:, 227:] = Phat_ce[:, 227:]
+        elif self._model_name == 'RIGModelL':     
+            What_ce = self.RigNetDecoder.forwardLight(I_ce, Pv_ce, w_ce, Pw_cc)
+            Phat_ce = self.APNet(What_ce.view(SP, -1))
+            Pedit[:, 227:254] = Phat_ce[:, 227:254]  
+            # Cycle-Consistent Per-pixel Consistency Loss
+            Pconsist[:, :227] = Phat_ce[:, :227]
+            Pconsist[:, 254:] = Phat_ce[:, 254:]
+
+        Iv = images[SP:] 
         Iw = images[: SP]
 
-        #print ("XXXXXXXX")
-        #print (Pv_ce)
-        #print (Phat_ce)
-        #print (Pw_cc)
 
         if self._opt.train_render:
-            #print ("Pedit:", Pedit.shape)
-            #print ("v_ce:", v_ce.shape) 
             self.render_loss_ce = self._opt.weight_render * self._RENDER_loss(Pedit, Pv_ce, Iv)
             self.render_loss_cc = self._opt.weight_render * self._RENDER_loss(Pconsist, Pw_cc, Iw)
 
@@ -211,7 +226,19 @@ class RIGModel(BaseModel):
             Pw = self.APNet(latent_w)
             Pv = Pw.clone()
             Pv[:, pca_id] = Pv[:, pca_id]+ pca_val
-            What = self.RigNetDecoder.forwardShape(I, Pv, latent_w, Pw) 
+
+            #What = self.RigNetDecoder.forwardShape(I, Pv, latent_w, Pw) 
+            if self._model_name == 'RIGModelS':     
+                What = self.RigNetDecoder.forwardShape(I, Pv, latent_w, Pw)
+            elif self._model_name == 'RIGModelE':     
+                What = self.RigNetDecoder.forwardExpression(I, Pv, latent, Pv)
+            elif self._model_name == 'RIGModelP':     
+                What = self.RigNetDecoder.forwardPose(I, Pv, latent, Pv)
+            elif self._model_name == 'RIGModelL':     
+                What = self.RigNetDecoder.forwardLight(I, Pv, latent, Pv)
+            elif self._model_name == 'RIGModelA':     
+                What = self.RigNetDecoder.forwardAlbedo(I, Pv, latent, Pv)
+
             WhatF = What.view(1, -1)
             Pwhat = self.APNet(WhatF)
         return What, Pw, Pwhat

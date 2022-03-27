@@ -12,8 +12,8 @@ class ModelsFactory:
         if model_name == 'APModel':
             from .models import APModel
             model = APModel(*args, **kwargs)
-        elif model_name == 'RIGModelS':
-            from .modelsS import RIGModel
+        elif model_name.startswith('RIGModel'):
+            from .modelsRig import RIGModel
             model = RIGModel(*args, **kwargs)
         else:
             raise ValueError("Model %s not recognized." % model_name)
