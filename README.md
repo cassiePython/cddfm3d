@@ -131,13 +131,40 @@ Some important parameters for training or testing:
 | --load_apnet_epoch | -1 | which APNet to load for training or testing |
 | --model | 'RIGModelS' | RIGModelS, RIGModelE, RIGModelL, RIGModelP, RIGModelA for shape, expression, light, pose, and albedo editing |
 
+### 5. Finetuning for Out-of-domain Faces
+
+Download the Disney girl dataset from [here](https://drive.google.com/drive/folders/14CuyyUP9p-GZ54CsSuN08WlulWhQKLba?usp=sharing). Thanks
+[Jing Bo](https://scholar.google.com/citations?user=M8I1aE4AAAAJ&hl=zh-CN) for helping collect this dataset from [Pinterest](https://www.pinterest.com/).
+Other datasets used in our paper can be obtained from the Internet, please refer to our paper.
+
+Preprocess the dataset:
+
+```
+cd stylegan2/
+python prepare_data.py --out LMDB_disney_1024 --n_worker 2 --size 1024 data_disney_girl
+```
+
+Finetuning StyleGAN2:
+
+```
+python finetune.py --ckpt checkpoint/stylegan2-ffhq-config-fine.pt --size 1024 --batch 16 --n_sample 2 LMDB_dog_1024/
+```
+
+I recommend to finetune using multi-gpus by adding 'CUDA_VISIBLE_DEVICES=0,1,2,3'. Try reducing the batch-size and n_sample
+to support a single gpu. Given a latent code corresponding to a non-real human face, you can edit it using the Editing Network trained in step 4, but produce results with the finetuned checkpoint.
+
+```
+python evaluate.py --name apnet_wpdc --model APModel
+```
+
+
 
 ## To Do
 - [ ] ~~Code for generating latent&image training pairs;~~
 - [ ] ~~Code for estimating 3DMM parameters and landmarks;~~
 - [ ] ~~Code and pre-trained models for the Attribute Prediction Network;~~
 - [ ] ~~Code and pre-trained models for the Latent Manipulation Network;~~
-- [ ] Code, Data and pre-trained models for Latent-Consistent Finetuning;
+- [ ] ~~Code, Data and pre-trained models for Latent-Consistent Finetuning;~~
 - [ ] A Google Colab to train and test the method.
 
 
