@@ -154,7 +154,7 @@ I recommend to finetune using multi-gpus by adding 'CUDA_VISIBLE_DEVICES=0,1,2,3
 to support a single gpu. Given a latent code corresponding to a non-real human face, you can edit it using the Editing Network trained in step 4, but produce results with the finetuned checkpoint.
 
 ```
-python evaluate.py --name apnet_wpdc --model APModel
+ppython evaluate.py --name shape --model RIGModelS --load_apnet_epoch 80
 ```
 
 
