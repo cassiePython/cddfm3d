@@ -151,7 +151,7 @@ python finetune.py --ckpt checkpoint/stylegan2-ffhq-config-fine.pt --size 1024 -
 ```
 
 I recommend to finetune using multi-gpus by adding 'CUDA_VISIBLE_DEVICES=0,1,2,3'. Try reducing the batch-size and n_sample
-to support a single gpu. Given a latent code corresponding to a non-real human face, you can edit it using the Editing Network trained in step 4, but produce results with the finetuned checkpoint.
+to support a single gpu. Given a latent code corresponding to a non-real human face, you can edit it using the Editing Network trained in step 4, but produce results with the finetuned checkpoint. You can directly download the finetuned models from [here](https://drive.google.com/drive/folders/13StJr2xP4MTxOyrfRK_q_soBhZQo1xG3?usp=sharing).
 
 ```
 ppython evaluate.py --name shape --model RIGModelS --load_apnet_epoch 80
