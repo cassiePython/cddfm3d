@@ -172,6 +172,7 @@ ppython evaluate.py --name shape --model RIGModelS --load_apnet_epoch 80
 
 - StyleGAN2-pytorch: https://github.com/rosinality/stylegan2-pytorch
 - Deep3DFaceReconstruction-pytorch: https://github.com/changhongjian/Deep3DFaceReconstruction-pytorch
+- FreezeG: https://github.com/bryandlee/FreezeG
 
 ## Citation
 
