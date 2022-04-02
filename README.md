@@ -158,7 +158,7 @@ ppython evaluate.py --name shape --model RIGModelS --load_apnet_epoch 80
 ```
 
 
-<img src='imgs/demo.jpg'/>
+<img src='imgs/demo.png'/>
 
 
 
