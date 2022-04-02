@@ -157,11 +157,10 @@ to support a single gpu. Given a latent code corresponding to a non-real human f
 ppython evaluate.py --name shape --model RIGModelS --load_apnet_epoch 80
 ```
 
-```HTML
+
 <video width="320" height="240" controls>
     <source src="imgs/demo.mp4" type="video/mp4">
 </video>
-```
 
 
 
