@@ -33,7 +33,7 @@ Note: Related checkpoints and 3DMM bases can be downloaded from [here](https://d
 2. For quickly trying our method, I recommend to generate 4K latent(StyleSpace)&image training pairs:
 
 ```
-cd stylegan2-pytorch
+cd stylegan2
 python generate_data.py --pics 4000 --ckpt checkpoint/stylegan2-ffhq-config-f.pt
 ```
 
