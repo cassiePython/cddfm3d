@@ -188,5 +188,5 @@ class Test:
 
 if __name__ == "__main__":
     model = Test()
-    #model.test()
-    model.test_shape()
+    model.test() # test the APNet
+    model.test_shape() # test the editing 
