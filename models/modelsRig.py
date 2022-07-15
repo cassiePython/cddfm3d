@@ -231,13 +231,13 @@ class RIGModel(BaseModel):
             if self._model_name == 'RIGModelS':     
                 What = self.RigNetDecoder.forwardShape(I, Pv, latent_w, Pw)
             elif self._model_name == 'RIGModelE':     
-                What = self.RigNetDecoder.forwardExpression(I, Pv, latent, Pv)
+                What = self.RigNetDecoder.forwardExpression(I, Pv, latent, Pw)
             elif self._model_name == 'RIGModelP':     
-                What = self.RigNetDecoder.forwardPose(I, Pv, latent, Pv)
+                What = self.RigNetDecoder.forwardPose(I, Pv, latent, Pw)
             elif self._model_name == 'RIGModelL':     
-                What = self.RigNetDecoder.forwardLight(I, Pv, latent, Pv)
+                What = self.RigNetDecoder.forwardLight(I, Pv, latent, Pw)
             elif self._model_name == 'RIGModelA':     
-                What = self.RigNetDecoder.forwardAlbedo(I, Pv, latent, Pv)
+                What = self.RigNetDecoder.forwardAlbedo(I, Pv, latent, Pw)
 
             WhatF = What.view(1, -1)
             Pwhat = self.APNet(WhatF)
